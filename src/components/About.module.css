@@ -1,0 +1,65 @@
+/* About.module.css */
+.about {
+    padding: 80px 0;
+    background: #F5F7FA;
+}
+
+.about h2 {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    color: #2C5F8D;
+    position: relative;
+    display: block;
+    text-align: center;
+}
+
+.about h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 4px;
+    background: #4A90E2;
+    border-radius: 2px;
+}
+
+.description {
+    max-width: 800px;
+    margin: 0 auto 50px;
+    font-size: 1.2rem;
+    color: #5A7A9A;
+    line-height: 1.8;
+}
+
+.skills h3 {
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    color: #2C5F8D;
+    text-align: center;
+}
+
+.skillList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+.skillList span {
+    background: #F0F4F8;
+    color: #2C5F8D;
+    padding: 10px 25px;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.skillList span:hover {
+    background: #4A90E2;
+    color: white;
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3);
+}
