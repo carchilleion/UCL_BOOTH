@@ -1,0 +1,23 @@
+# Task List: Urian Cybersecurity League Website
+
+- [x] Project Initialization <!-- id: 0 -->
+    - [x] Scaffold React + Vite + TypeScript project <!-- id: 1 -->
+    - [x] Install dependencies (Tailwind, Framer Motion, Lucide) <!-- id: 2 -->
+    - [x] Configure Tailwind CSS (Colors, Fonts) <!-- id: 3 -->
+    - [x] Setup folder structure <!-- id: 4 -->
+- [x] Component Implementation <!-- id: 5 -->
+    - [x] Create Navbar component (Responsive, Smooth Scroll) <!-- id: 6 -->
+    - [x] Create Hero Section (Mascot placeholder, CTA) <!-- id: 7 -->
+    - [x] Create SectionWrapper component <!-- id: 8 -->
+    - [x] Create About Section <!-- id: 9 -->
+    - [x] Create Vision & Mission Section (Mission Cards) <!-- id: 10 -->
+    - [x] Create Learning Features Section (Feature Cards) <!-- id: 11 -->
+    - [x] Create Community Section <!-- id: 12 -->
+    - [x] Create Footer <!-- id: 13 -->
+- [x] Page Assembly & Styling <!-- id: 14 -->
+    - [x] Assemble App.tsx <!-- id: 15 -->
+    - [x] Apply Global Styles & Animations <!-- id: 16 -->
+    - [x] Optimize Images & Accessibility <!-- id: 17 -->
+- [x] Verification <!-- id: 18 -->
+    - [x] Verify Build (`npm run build`) <!-- id: 19 -->
+    - [x] Verify Mobile Responsiveness <!-- id: 20 -->
