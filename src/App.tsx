@@ -110,6 +110,56 @@ function App() {
           </div>
         </SectionWrapper>
 
+        {/* Google Interland Section */}
+        <SectionWrapper id="interland" className="bg-gradient-to-br from-indigo-50 via-purple-50 to-blue-50">
+          <div className="text-center mb-12">
+            <div className="inline-block px-4 py-1.5 mb-4 rounded-full bg-green-100 text-green-700 font-medium text-sm">
+              🎮 Interactive Learning
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Play Google Interland</h2>
+            <p className="text-gray-500 max-w-2xl mx-auto">
+              Learn internet safety through a fun, adventure-packed game. Explore four worlds and become an Internet Awesome champion!
+            </p>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-white rounded-3xl shadow-lg border border-purple-100 overflow-hidden">
+              <div className="bg-gradient-to-r from-blue-500 via-purple-500 to-green-500 p-1">
+                <div className="bg-white rounded-t-2xl p-8 md:p-12">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    {[
+                      { name: "Kind Kingdom", emoji: "💙", color: "from-blue-400 to-blue-600", desc: "Be kind online" },
+                      { name: "Reality River", emoji: "🌊", color: "from-green-400 to-teal-600", desc: "Don't fall for fake" },
+                      { name: "Mindful Mountain", emoji: "⛰️", color: "from-orange-400 to-red-500", desc: "Share with care" },
+                      { name: "Tower of Treasure", emoji: "🏰", color: "from-purple-400 to-indigo-600", desc: "Secure your secrets" },
+                    ].map((world, index) => (
+                      <div key={index} className="group text-center">
+                        <div className={`w-full aspect-square rounded-2xl bg-gradient-to-br ${world.color} flex items-center justify-center shadow-md transition-all duration-300 group-hover:scale-105 group-hover:shadow-xl`}>
+                          <span className="text-4xl">{world.emoji}</span>
+                        </div>
+                        <p className="mt-2 font-semibold text-sm text-gray-800">{world.name}</p>
+                        <p className="text-xs text-gray-500">{world.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="text-center">
+                    <a
+                      href="https://beinternetawesome.withgoogle.com/en_us/interland"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-500 via-purple-500 to-green-500 text-white font-bold rounded-xl hover:opacity-90 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1 text-lg"
+                    >
+                      🚀 Play Interland Now
+                    </a>
+                    <p className="mt-3 text-sm text-gray-400">Free game by Google — no account needed</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </SectionWrapper>
+
         {/* Community Section */}
         <SectionWrapper id="community" className="bg-white">
           <div className="flex flex-col md:flex-row items-center gap-12 bg-primary/5 rounded-3xl p-8 md:p-16 border border-primary/10">
@@ -123,12 +173,22 @@ function App() {
               </button>
             </div>
             <div className="w-full md:w-1/2 flex justify-center">
-              {/* Abstract Community Representation */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="w-32 h-32 bg-primary/20 rounded-2xl rounded-tr-[3rem]"></div>
-                <div className="w-32 h-32 bg-secondary/30 rounded-2xl rounded-tl-[3rem] mt-8"></div>
-                <div className="w-32 h-32 bg-accent/30 rounded-2xl rounded-br-[3rem] -mt-8"></div>
-                <div className="w-32 h-32 bg-primary/10 rounded-2xl rounded-bl-[3rem]"></div>
+              {/* Stitch & Lilo - Ohana Theme */}
+              <div className="flex gap-6 items-end">
+                {/* Stitch */}
+                <div className="group relative">
+                  <div className="w-40 h-48 rounded-2xl bg-gradient-to-br from-blue-400 to-indigo-500 shadow-lg overflow-hidden flex items-center justify-center transition-transform hover:scale-105 hover:-rotate-2">
+                    <img src="/stitch.png" alt="Stitch" className="w-full h-full object-cover" onError={(e: React.SyntheticEvent<HTMLImageElement>) => { (e.target as HTMLImageElement).style.display = 'none'; (e.target as HTMLImageElement).parentElement!.innerHTML = '<div class="flex flex-col items-center gap-2"><span class="text-5xl">🛸</span><span class="text-white font-bold text-sm">Stitch</span><span class="text-white/60 text-xs">Add stitch.png</span></div>'; }} />
+                  </div>
+                  <p className="text-center mt-2 text-sm font-semibold text-gray-600">Stitch</p>
+                </div>
+                {/* Lilo */}
+                <div className="group relative -mb-4">
+                  <div className="w-40 h-48 rounded-2xl bg-gradient-to-br from-rose-400 to-orange-400 shadow-lg overflow-hidden flex items-center justify-center transition-transform hover:scale-105 hover:rotate-2">
+                    <img src="/lilo.png" alt="Lilo" className="w-full h-full object-cover" onError={(e: React.SyntheticEvent<HTMLImageElement>) => { (e.target as HTMLImageElement).style.display = 'none'; (e.target as HTMLImageElement).parentElement!.innerHTML = '<div class="flex flex-col items-center gap-2"><span class="text-5xl">🌺</span><span class="text-white font-bold text-sm">Lilo</span><span class="text-white/60 text-xs">Add lilo.png</span></div>'; }} />
+                  </div>
+                  <p className="text-center mt-2 text-sm font-semibold text-gray-600">Lilo</p>
+                </div>
               </div>
             </div>
           </div>

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Shield, ChevronRight } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 
 const Hero: React.FC = () => {
     return (
@@ -48,23 +48,34 @@ const Hero: React.FC = () => {
                             transition={{ duration: 0.8, delay: 0.2 }}
                             className="relative z-10"
                         >
-                            {/* Mascot Placeholder - "Cute Blue Ocean Theme" */}
-                            <div className="w-64 h-64 md:w-80 md:h-80 bg-gradient-to-tr from-primary to-secondary rounded-full flex items-center justify-center shadow-2xl relative overflow-hidden">
-                                <div className="absolute inset-4 bg-white/20 rounded-full blur-xl"></div>
-                                <Shield className="w-32 h-32 text-white drop-shadow-md z-10" />
-                                {/* Cute eyes (placeholder mascot face) */}
-                                <div className="absolute top-1/3 left-1/3 w-4 h-4 bg-white rounded-full animate-bounce delay-75"></div>
-                                <div className="absolute top-1/3 right-1/3 w-4 h-4 bg-white rounded-full animate-bounce"></div>
-                                <div className="absolute bottom-1/3 w-8 h-4 border-b-4 border-white rounded-full"></div>
+                            {/* UCL Logo */}
+                            <div className="w-64 h-64 md:w-80 md:h-80 rounded-full flex items-center justify-center shadow-2xl relative overflow-hidden">
+                                <img src="/ucl-logo.png" alt="Urian Cybersecurity League Logo" className="w-full h-full object-cover" />
                             </div>
 
-                            {/* Floating elements */}
-                            <div className="absolute -top-4 -right-4 bg-white p-3 rounded-2xl shadow-lg animate-pulse">
-                                <span className="text-2xl">🛡️</span>
-                            </div>
-                            <div className="absolute -bottom-4 -left-4 bg-white p-3 rounded-2xl shadow-lg animate-pulse delay-700">
-                                <span className="text-2xl">💻</span>
-                            </div>
+                            {/* Stitch placeholder */}
+                            <motion.div
+                                className="absolute -top-6 -right-6 bg-white p-2 rounded-2xl shadow-lg"
+                                animate={{ y: [0, -8, 0] }}
+                                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                            >
+                                <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center overflow-hidden">
+                                    {/* Replace src with your Stitch image */}
+                                    <img src="/stitch.png" alt="Stitch" className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; (e.target as HTMLImageElement).parentElement!.innerHTML = '<span class="text-white text-2xl">�</span><span class="absolute bottom-0 text-[8px] text-white/80 font-bold">STITCH</span>'; }} />
+                                </div>
+                            </motion.div>
+
+                            {/* Lilo placeholder */}
+                            <motion.div
+                                className="absolute -bottom-6 -left-6 bg-white p-2 rounded-2xl shadow-lg"
+                                animate={{ y: [0, 8, 0] }}
+                                transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                            >
+                                <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-rose-400 to-orange-400 flex items-center justify-center overflow-hidden">
+                                    {/* Replace src with your Lilo image */}
+                                    <img src="/lilo.png" alt="Lilo" className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; (e.target as HTMLImageElement).parentElement!.innerHTML = '<span class="text-white text-2xl">🌺</span><span class="absolute bottom-0 text-[8px] text-white/80 font-bold">LILO</span>'; }} />
+                                </div>
+                            </motion.div>
                         </motion.div>
                     </div>
                 </div>
