@@ -18,16 +18,17 @@ const Navbar: React.FC = () => {
         { name: 'About', href: '#about' },
         { name: 'Vision', href: '#vision' },
         { name: 'Missions', href: '#missions' },
+        { name: 'Quiz', href: '#quiz' },
         { name: 'Community', href: '#community' },
     ];
 
     return (
-        <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/80 backdrop-blur-md shadow-sm' : 'bg-transparent'}`}>
+        <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-background/90 backdrop-blur-md shadow-sm border-b border-secondary/10' : 'bg-transparent'}`}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                     <div className="flex-shrink-0 flex items-center gap-2">
                         <img src="/ucl-logo.png" alt="UCL Logo" className="h-10 w-10 rounded-full object-cover" />
-                        <span className="font-bold text-xl text-primary tracking-tight">UCL</span>
+                        <span className="font-bold text-xl text-stitch-dark tracking-tight">UCL</span>
                     </div>
 
                     <div className="hidden md:block">
@@ -57,7 +58,7 @@ const Navbar: React.FC = () => {
 
             {/* Mobile menu */}
             {isOpen && (
-                <div className="md:hidden bg-white border-b border-gray-100">
+                <div className="md:hidden bg-background border-b border-secondary/10">
                     <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                         {navLinks.map((link) => (
                             <a
