@@ -1,4 +1,4 @@
-import { db } from '../firebaseConfig';
+import { db, firebaseReady } from '../firebaseConfig';
 import {
     ref,
     push,
@@ -24,12 +24,20 @@ const MAX_ENTRIES = 50;
  * Falls back to localStorage if Firebase is unavailable.
  */
 export async function fetchLeaderboard(): Promise<LeaderboardEntry[]> {
+    if (!firebaseReady) {
+        console.warn('[Leaderboard] Firebase not configured, using localStorage');
+        return getLocalLeaderboard();
+    }
+
     try {
         const dbRef = ref(db, LEADERBOARD_REF);
         const q = query(dbRef, orderByChild('score'), limitToLast(MAX_ENTRIES));
         const snapshot = await get(q);
 
-        if (!snapshot.exists()) return [];
+        if (!snapshot.exists()) {
+            console.log('[Leaderboard] Firebase returned empty — no entries yet');
+            return [];
+        }
 
         const entries: LeaderboardEntry[] = [];
         snapshot.forEach((child) => {
@@ -43,9 +51,10 @@ export async function fetchLeaderboard(): Promise<LeaderboardEntry[]> {
                 new Date(a.date).getTime() - new Date(b.date).getTime()
         );
 
+        console.log(`[Leaderboard] Loaded ${entries.length} entries from Firebase`);
         return entries;
     } catch (error) {
-        console.warn('Firebase unavailable, falling back to localStorage:', error);
+        console.error('[Leaderboard] Firebase read FAILED:', error);
         return getLocalLeaderboard();
     }
 }
@@ -60,11 +69,17 @@ export async function addLeaderboardEntry(
     // Always save locally as backup
     saveLocalLeaderboard(entry);
 
+    if (!firebaseReady) {
+        console.warn('[Leaderboard] Firebase not configured, saved to localStorage only');
+        return;
+    }
+
     try {
         const dbRef = ref(db, LEADERBOARD_REF);
         await push(dbRef, entry);
+        console.log('[Leaderboard] Entry saved to Firebase:', entry.name, entry.score);
     } catch (error) {
-        console.warn('Firebase write failed, saved to localStorage only:', error);
+        console.error('[Leaderboard] Firebase write FAILED:', error);
     }
 }
 

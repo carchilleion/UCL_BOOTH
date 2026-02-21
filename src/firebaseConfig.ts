@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getDatabase } from 'firebase/database';
+import { getDatabase, Database } from 'firebase/database';
 
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -11,5 +11,11 @@ const firebaseConfig = {
     appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
+// Debug: verify config is loaded
+if (!firebaseConfig.databaseURL) {
+    console.error('[Firebase] VITE_FIREBASE_DATABASE_URL is missing! Leaderboard will use localStorage only.');
+}
+
 const app = initializeApp(firebaseConfig);
-export const db = getDatabase(app);
+export const db: Database = getDatabase(app);
+export const firebaseReady = !!firebaseConfig.databaseURL;
