@@ -1,14 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getRandomQuestions, type QuizQuestion } from '../data/cyberQuizData';
-import { Trophy, ArrowRight, RotateCcw, User, ChevronRight, Crown, Medal, Award, Shield, Gift, Clock } from 'lucide-react';
-
-interface LeaderboardEntry {
-    name: string;
-    score: number;
-    total: number;
-    date: string;
-}
+import { Trophy, ArrowRight, RotateCcw, User, ChevronRight, Crown, Medal, Award, Shield, Gift, Clock, Loader2 } from 'lucide-react';
+import { fetchLeaderboard, addLeaderboardEntry, type LeaderboardEntry } from '../services/leaderboardService';
 
 interface AttemptRecord {
     date: string;
@@ -18,24 +12,7 @@ interface AttemptRecord {
 
 const QUIZ_COUNT = 15;
 const MAX_ATTEMPTS = 2;
-const STORAGE_KEY = 'ucl-cyber-quiz-leaderboard';
 const ATTEMPTS_KEY = 'ucl-cyber-quiz-attempts';
-
-function getLeaderboard(): LeaderboardEntry[] {
-    try {
-        const data = localStorage.getItem(STORAGE_KEY);
-        return data ? JSON.parse(data) : [];
-    } catch {
-        return [];
-    }
-}
-
-function saveToLeaderboard(entry: LeaderboardEntry): void {
-    const lb = getLeaderboard();
-    lb.push(entry);
-    lb.sort((a, b) => b.score - a.score || new Date(a.date).getTime() - new Date(b.date).getTime());
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(lb.slice(0, 50)));
-}
 
 function getCurrentPeriod(): 'AM' | 'PM' {
     return new Date().getHours() < 12 ? 'AM' : 'PM';
@@ -84,6 +61,7 @@ const CyberQuiz: React.FC = () => {
     const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
     const [hasAnswered, setHasAnswered] = useState(false);
     const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
+    const [leaderboardLoading, setLeaderboardLoading] = useState(false);
     const [remaining, setRemaining] = useState(getRemainingAttempts());
 
     useEffect(() => {
@@ -131,15 +109,23 @@ const CyberQuiz: React.FC = () => {
                 total: QUIZ_COUNT,
                 date: new Date().toISOString(),
             };
-            saveToLeaderboard(entry);
-            setLeaderboard(getLeaderboard());
+            // Save to Firebase (and localStorage fallback)
+            addLeaderboardEntry(entry).then(() => {
+                fetchLeaderboard().then(setLeaderboard);
+            });
             setState('result');
         }
     };
 
-    const showLeaderboard = () => {
-        setLeaderboard(getLeaderboard());
+    const showLeaderboard = async () => {
         setState('leaderboard');
+        setLeaderboardLoading(true);
+        try {
+            const data = await fetchLeaderboard();
+            setLeaderboard(data);
+        } finally {
+            setLeaderboardLoading(false);
+        }
     };
 
     const retakeQuiz = () => {
@@ -169,7 +155,7 @@ const CyberQuiz: React.FC = () => {
     };
 
     useEffect(() => {
-        setLeaderboard(getLeaderboard());
+        fetchLeaderboard().then(setLeaderboard);
         const attemptsLeft = getRemainingAttempts();
         setRemaining(attemptsLeft);
         if (attemptsLeft <= 0) {
@@ -366,10 +352,10 @@ const CyberQuiz: React.FC = () => {
                                             className={`w-full text-left p-4 rounded-xl border-2 transition-all duration-200 flex items-start gap-3 ${optionStyle} ${!hasAnswered ? 'cursor-pointer' : 'cursor-default'}`}
                                         >
                                             <span className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold ${hasAnswered && idx === currentQ.correctIndex
-                                                    ? 'bg-tropical-green text-white'
-                                                    : hasAnswered && idx === selectedAnswer && idx !== currentQ.correctIndex
-                                                        ? 'bg-secondary text-white'
-                                                        : 'bg-tropical-sand/60 text-stitch-dark'
+                                                ? 'bg-tropical-green text-white'
+                                                : hasAnswered && idx === selectedAnswer && idx !== currentQ.correctIndex
+                                                    ? 'bg-secondary text-white'
+                                                    : 'bg-tropical-sand/60 text-stitch-dark'
                                                 }`}>
                                                 {letters[idx]}
                                             </span>
@@ -419,8 +405,8 @@ const CyberQuiz: React.FC = () => {
                                     animate={{ scale: 1 }}
                                     transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
                                     className={`w-24 h-24 mx-auto mb-6 rounded-full flex items-center justify-center shadow-xl ${isPerfect
-                                            ? 'bg-gradient-to-br from-accent to-lilo-sunset'
-                                            : 'bg-gradient-to-br from-stitch-light to-primary'
+                                        ? 'bg-gradient-to-br from-accent to-lilo-sunset'
+                                        : 'bg-gradient-to-br from-stitch-light to-primary'
                                         }`}
                                 >
                                     {isPerfect
@@ -549,7 +535,12 @@ const CyberQuiz: React.FC = () => {
                                     <p className="text-gray-500 text-sm mt-1">Top quiz scores</p>
                                 </div>
 
-                                {leaderboard.length === 0 ? (
+                                {leaderboardLoading ? (
+                                    <div className="text-center py-8 text-gray-400">
+                                        <Loader2 className="w-8 h-8 mx-auto mb-2 animate-spin text-primary" />
+                                        <p className="text-sm">Loading leaderboard...</p>
+                                    </div>
+                                ) : leaderboard.length === 0 ? (
                                     <div className="text-center py-8 text-gray-400">
                                         <p className="text-lg font-medium">No scores yet</p>
                                         <p className="text-sm">Be the first to take the quiz!</p>
@@ -563,12 +554,12 @@ const CyberQuiz: React.FC = () => {
                                                 animate={{ opacity: 1, x: 0 }}
                                                 transition={{ delay: idx * 0.05 }}
                                                 className={`flex items-center gap-3 p-3 rounded-xl transition-colors ${idx === 0
-                                                        ? 'bg-gradient-to-r from-accent/10 to-lilo-sunset/10 border border-accent/30'
-                                                        : idx === 1
-                                                            ? 'bg-gray-50 border border-gray-200'
-                                                            : idx === 2
-                                                                ? 'bg-secondary/5 border border-secondary/20'
-                                                                : 'hover:bg-tropical-sand/30'
+                                                    ? 'bg-gradient-to-r from-accent/10 to-lilo-sunset/10 border border-accent/30'
+                                                    : idx === 1
+                                                        ? 'bg-gray-50 border border-gray-200'
+                                                        : idx === 2
+                                                            ? 'bg-secondary/5 border border-secondary/20'
+                                                            : 'hover:bg-tropical-sand/30'
                                                     }`}
                                             >
                                                 <div className="flex-shrink-0">{getRankIcon(idx)}</div>
