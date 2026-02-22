@@ -11,3 +11,33 @@
     @apply bg-background text-gray-800 font-sans;
   }
 }
+
+@keyframes fly-diagonal-up {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  100% {
+    transform: translate(100vw, -100vh);
+  }
+}
+
+@keyframes fly-diagonal-down {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  100% {
+    transform: translate(100vw, 100vh);
+  }
+}
+
+@keyframes fly-horizontal {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(100vw);
+  }
+}
